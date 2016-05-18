@@ -33,7 +33,17 @@ FROM ((SELECT nomearea FROM aluno NATURAL JOIN linhapesquisa) UNION ALL (SELECT 
 GROUP BY nomearea 
 ORDER BY count(*) DESC;
 
-/*Consulta 7: Crie uma view que liste os laboratórios que possuem mais recursos que a média dos outros laboratórios.*/
+/* 7. Crie uma view que liste os laboratórios que possuem mais recursos que a média dos outros
+laboratórios. */
+CREATE or REPLACE VIEW laboratorios_mais_recursos AS
+SELECT *
+FROM (SELECT COUNT(*) AS recursos, laboratorio 
+      FROM recurso 
+      GROUP BY laboratorio)
+WHERE recursos > (SELECT AVG(recursos) FROM 
+      (SELECT COUNT(*) AS recursos, laboratorio 
+       FROM recurso 
+       GROUP BY laboratorio));
 
 /*8 - Quais laboratórios não possuem alunos de doutorado?*/
 
