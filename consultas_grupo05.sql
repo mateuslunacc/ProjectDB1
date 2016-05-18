@@ -25,6 +25,14 @@ BEGIN
   WHERE g.supervisor = :OLD.matr;
 END;
 
+/* 6. Crie uma view que liste as áreas de pesquisa em ordem decrescente, pelo número de
+professores mais o número de alunos participantes e o nome. */
+CREATE or REPLACE VIEW trabalhando_linhapesquisa AS
+SELECT count(*) AS alocados, nomearea
+FROM ((SELECT nomearea FROM aluno NATURAL JOIN linhapesquisa) UNION ALL (SELECT nomearea FROM professor_linhapesquisa NATURAL JOIN linhapesquisa)) 
+GROUP BY nomearea 
+ORDER BY count(*) DESC;
+
 /*Consulta 7: Crie uma view que liste os laboratórios que possuem mais recursos que a média dos outros laboratórios.*/
 
 /*8 - Quais laboratórios não possuem alunos de doutorado?*/
