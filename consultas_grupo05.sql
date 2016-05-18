@@ -1,12 +1,3 @@
-/*Consulta 5: Faça um trigger que permita ao remover um aluno de pós sejam removidas suas supervisões*/
-CREATE or REPLACE TRIGGER remove_supervisor 
-  AFTER DELETE ON aluno
-  FOR EACH ROW 
-BEGIN 
-  DELETE FROM graduacao g 
-  WHERE g.supervisor = :OLD.matr;
-END;
-
 /*1 - Liste a quantidade de alunos por linha de pesquisa.*/
 SELECT lp.nomearea, lp.nomesubarea, COUNT(*)
 FROM linhaPesquisa lp, aluno a
@@ -25,7 +16,14 @@ FROM projeto p
 WHERE p.cod NOT IN (SELECT pub.projeto FROM publicacao pub) 
 OR p.cod NOT IN (SELECT pat.projeto FROM patente pat)
 
-
+/*Consulta 5: Faça um trigger que permita ao remover um aluno de pós sejam removidas suas supervisões*/
+CREATE or REPLACE TRIGGER remove_supervisor 
+  AFTER DELETE ON aluno
+  FOR EACH ROW 
+BEGIN 
+  DELETE FROM graduacao g 
+  WHERE g.supervisor = :OLD.matr;
+END;
 
 /*Consulta 7: Crie uma view que liste os laboratórios que possuem mais recursos que a média dos outros laboratórios.*/
 
